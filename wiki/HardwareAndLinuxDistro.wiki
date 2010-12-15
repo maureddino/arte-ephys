@@ -12,38 +12,36 @@ A number of additionall development libraries need to be installed to build ArtE
 
 = Details =
 
-* Desktop *
+== Desktop ==
 Our test machine:
--spec 1 (processor, link to newegg?)
--spec 2 (mobo, link to newegg?)
--spec 3
 
-* NI-6254 *
--drivers link
+ spec 1 (processor, link to newegg?)
 
-* GeForce 7300 (?) *
--link to nvidia product page
--link to driver rpm (in case it leaves the repo?)
+ spec 2 (mobo, link to newegg?)
 
-* Additional libraries *
-libXt-devel (and dependencies)
-plotutils-devel (and dependencies)
-gtk+-devel (... and dependencies for all the following...)
-gcc-c++
-libXaw-devel
-libpng-devel
-gtk2-devel  (this should also pull down atk, pango, cairo)
-mesa-libGLU-devel
-LINK to gtkglext-1.2.0 - instructions for how to configure and build
-gtkmm2-devel
-cairomm-devel
-gtkmm4-devel
-
-(this is the list of packages installed by yum on the test computer.  Of course the building gtkmm24 code would probably work with some omissions, but I haven't tested this yet.  Let's not pare this list down until we test the proposed new list on a fresh machine).
+ spec 3
 
 
+== NI-6254 ==
+ drivers link
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+== GeForce 7300 (?) ==
+ link to nvidia product page
+
+ link to driver rpm (in case it leaves the repo?)
+
+== Additional libraries ==
+
+ libXt-devel (and dependencies)
+ plotutils-devel (and dependencies)
+ gtk+-devel (... and dependencies for all the following...)
+ gcc-c++
+ libXaw-devel
+ libpng-devel
+ gtk2-devel  (this should also pull down atk, pango, cairo)
+ mesa-libGLU-devel
+ LINK to gtkglext-1.2.0 - instructions for how to configure and build
+ gtkmm2-devel
+ cairomm-devel
+ gtkmm4-devel
+ (this is the list of packages installed by yum on the test computer.  Of course the building gtkmm24 code would probably work with some omissions, but I haven't tested this yet.  Let's not pare this list down until we test the proposed new list on a fresh machine).
