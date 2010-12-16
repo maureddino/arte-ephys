@@ -37,13 +37,36 @@ How can we implement all this?
 
 =Proposal=
 
-2 config files, each in 2 possible places
+2 config files, each in xml, each in 2 possible places
 
  * arte_backend.conf
  * arte_session.conf
 
-Parse them using [http://www.boost.org/doc/libs/1_45_0/doc/html/property_tree.html Boost Property Tree]
+Living in:
+
+ * pwd from which arte was launched, if not found there, then search
+ * ~/.arte/
+
+Rough sketch of a config file:
+
+{{{
+<session_config>
+ <trode>
+  <name>"trode01"</name>
+  <filter>"IIR_600_6000_N4"</filter>
+  <channel>01</channel>
+  <channel>02</channel>
+  <channel>03</channel>
+ </trode>
+ <trode>
+  <filter>"IIR_600_6000_N4"</filter>
+  <channel>04</channel>
+ </trode>
+</session_config>
+}}}
+
+(admittedly I don't know how to write a clear xml file yet)
+
+Parse xml files using [http://www.boost.org/doc/libs/1_45_0/doc/html/property_tree.html Boost Property Tree]
 
 Then hopefully we can write to xml, too, when the tree changes due to user input.
-
-
