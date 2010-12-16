@@ -97,4 +97,4 @@ Rough sketch of a config file:
 
 Parse xml files using [http://www.boost.org/doc/libs/1_45_0/doc/html/property_tree.html Boost Property Tree]
 
-Then hopefully we can write to xml, too, when the tree changes due to user input.
+We can write to xml, too, when the tree changes due to user input.
