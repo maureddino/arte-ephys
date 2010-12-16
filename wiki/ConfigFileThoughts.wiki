@@ -51,17 +51,45 @@ Rough sketch of a config file:
 
 {{{
 <session_config>
- <trode>
-  <name>"trode01"</name>
-  <filter>"IIR_600_6000_N4"</filter>
-  <channel>01</channel>
-  <channel>02</channel>
-  <channel>03</channel>
- </trode>
- <trode>
-  <filter>"IIR_600_6000_N4"</filter>
-  <channel>04</channel>
- </trode>
+ <output_file>data.aep</output_file>
+ <trodes>
+  <trode>TT01
+   <name>"trode01"</name>
+   <filter>"IIR_600_6000_N4"</filter>
+   <input_channels>
+    <channel>01</channel>
+    <channel>02</channel>
+    <channel>03</channel>
+   <input_channels>
+  </trode>
+  <trode>TT02
+   <name>"trode02"</name>
+   <filter>"IIR_600_6000_N4"</filter>
+   <channels>
+    <channel>04</channel>
+   </channels>
+  </trode>
+ </trodes>
+ <eegbanks>
+  <eegbank>Hippocampus
+   <filter>"IIR_1_375_N4"</filter>
+   <eeg>EEG01
+    <channel>01</channel>
+    <color>Hot Pink</color>
+   </eeg>
+   <eeg>EEG02
+    <channel>05</channel>
+    <color>Sea Monkey</color>
+   </eeg>
+  </eegbank>
+  <eegbank>Cortex
+   <filter>"IIR_p1_200_N4"</filter>
+   <eeg>EEG03
+    <channel>09</channel>
+    <color>Turquoise</color>
+   </eeg>
+  </eegbank>
+ </eegbanks>
 </session_config>
 }}}
 
