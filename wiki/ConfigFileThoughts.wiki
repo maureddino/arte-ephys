@@ -1,0 +1,49 @@
+#summary How should we implement configuration for recording sessions?
+#labels Configuration,PropertyTree
+
+= Introduction =
+
+There's a lot of state to save between sessions:
+
+ ==Session settings constant within rat==
+  * channel -> trode assignment
+  * trode filter settings
+  * channel gains
+  * channel thresholds
+  * channel colors
+  * channel 'cursors' (ie a little marker in amplitude space for vis only)
+  * (potentially) cluster bounds for closed-loop stuff
+  * channel -> eeg assignment
+  * eeg stacking order
+  * eeg trace color
+  * eeg filter settings
+
+ ==Settings that may change within day, at user's whim ==
+  * Trode -> display window assignment
+  * Trode magnification
+  * Ordering displayed trodes within a window
+  * Show/hide metadata 
+
+ ==Back-end settings probably essentially constant over life of the system ==
+  * pin_in -> channel assignments
+  * Daq input buffer sizes
+  * Rules for default output file names
+
+ ==One-off, single-day or dubugging mode==
+  * Get input from card, or from saved card buffer dump series?
+  * No displays?
+
+How can we implement all this?
+
+=Proposal=
+
+2 config files, each in 2 possible places
+
+ * arte_backend.conf
+ * arte_session.conf
+
+Parse them using [http://www.boost.org/doc/libs/1_45_0/doc/html/property_tree.html Boost Property Tree]
+
+Then hopefully we can write to xml, too, when the tree changes due to user input.
+
+
