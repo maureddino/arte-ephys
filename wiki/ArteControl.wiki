@@ -1,0 +1,19 @@
+#summary Discussion: Network control app for arte
+#labels Network,Interface,Headless
+
+= Details =
+
+Please give feedback!  I haven't read much about network programming.
+
+The idea: arte acquisition will be entirely headless.  All UI will happen through UDP or TCP commands.
+
+Is this the right idea, below?
+The process running the program 'arte-control' will be the server, and all setup processes and display processes will be clients.
+
+A TCP socket on server port A will wait for connection requests from clients.  Port number A will be hard-coded in the headers of arte-control, arte, and arte-display?
+
+UDP port B will be for passing spike/eeg data from arte client to arte-display client.
+
+Plz edit this page heavily, adding links to relevant sites, and code snippets demonstrating how to set up these 'listening' and 'talking' ports.  This is a little bit of a sticking point for my thinking about where/when to load initialization files, etc.
+
+Thanks!
