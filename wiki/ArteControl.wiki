@@ -16,4 +16,12 @@ UDP port B will be for passing spike/eeg data from arte client to arte-display c
 
 Plz edit this page heavily, adding links to relevant sites, and code snippets demonstrating how to set up these 'listening' and 'talking' ports.  This is a little bit of a sticking point for my thinking about where/when to load initialization files, etc.
 
+=Sub-issues=
+
+== Repo ==
+
+What about having 3 different executables under development in this repository?  How should we restructure it?  trunk/arte-headless/project_directories ,  trunk/arte-control/project_directories, trunk/arte_display/project_directories  ?  Or maybe  arte-control/trunk/project_dirs, arte-headless/trunk etc etc?
+
+Your thoughts inline.
+
 Thanks!
