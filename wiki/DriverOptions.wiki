@@ -12,7 +12,7 @@ After some initial coding with NIDAQmx, and Stuart's trolling of the NI forums, 
 || Lots of support online (forums) ||  inconsistent sys req (rhel3 vs. 5 in various docs)  ||
 || Easy to use (no basis for comparison tho) ||  ExportClk (sp?) doesn't work ||
 || auto-threaded chans, thread-safe  || somewhat scary startup segfault when you forget to link with ld ||
-|| Samp clk on board means reliable read intervals || API call failure sometimes hangs system ||
+|| Samp clk on board means reliable read intervals || API call failure sometimes hangs system rather than throwing well-behaved error ||
 || Card manages buffer reads, issues callbacks (convenient for interfacing) || NI tech help instinctively dismissive of unsupported (modern) linux distros/kernels ||
 
 Given the on-board timing, RT linux seems unnecessary.
