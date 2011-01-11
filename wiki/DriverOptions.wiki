@@ -31,7 +31,7 @@ Feel free to answer these q's inline, if you research: (thanks)
 
 == comedi/analogy, RTAI/Xenomai ==
 
-|| Open source!  || Last update was in 2008  ||
+|| Open source! Runs in Ubuntu 10.04 || Last update was in 2008  ||
 || Support for our card ||    ||
 || analogy support for our card, too ||     ||
 || Pretty active community, discussion boards ||     ||
