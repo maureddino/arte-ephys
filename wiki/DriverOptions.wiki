@@ -24,7 +24,7 @@ Given the on-board timing, RT linux seems unnecessary.
 
 Feel free to answer these q's inline, if you research: (thanks)
 
-  *  What _is_ base?  Different driver, or just different API?
+  *  What _is_ base?  Different driver, or just different API? For comparison between NIDAQmx and NIDAQ Base, see http://www.ni.com/dataacquisition/companion_software.htm#driver. NIDAQ Base is not multi-threaded.
   *  Can it do the clock signal exporting we need?  
   *  Can it divide down the clock signal and offset it?
   *  How does sample timing work?  RT linux necessary, useful?
@@ -54,7 +54,7 @@ General Standards has a 64 channel, 16 bit, 200KSPS per channel card that does s
 
 == Find a different sln specifically for computer sync ==
 
-It seems that the most offensive API fn's are the ones we're using to get ahold of the clock signal for inter-computer sync.  We may think about staying with NIDAQmx 8 Linux and the CentOS 5.5 solution, and adding another PCI card (either NI or another vendor, or a Master-8!) for the sole purpose of exporting TTL clock signals (master) and counting those signals (slaves).  Alternatively, by patching the RTSI cable itself, we may be able to get the 80MHz sample clock as TTL?  This would probably void the warranty on the NI cards though.
+It seems that the most offensive API fn's are the ones we're using to get a hold of the clock signal for inter-computer sync.  We may think about staying with NIDAQmx 8 Linux and the CentOS 5.5 solution, and adding another PCI card (either NI or another vendor, or a Master-8!) for the sole purpose of exporting TTL clock signals (master) and counting those signals (slaves).  Alternatively, by patching the RTSI cable itself, we may be able to get the 80MHz sample clock as TTL?  This would probably void the warranty on the NI cards though.
 
 == Stay with NIDAQmx, Develop under Windows Instead ==
 
