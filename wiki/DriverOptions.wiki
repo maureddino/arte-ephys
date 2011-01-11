@@ -7,7 +7,7 @@ After some initial coding with NIDAQmx, and Stuart's trolling of the NI forums, 
 == NIDAQmx 8.0 Linux ==
 
 || *Advantages* || *Disadvantages* ||
-|| kernel module 'works' in CentOS5.5 || ConnTerms crash ||
+|| kernel module 'works' in CentOS5.5 || ConnTerms crash prevents us from exporting clock signal ||
 || Successful continuous acq tests ||  closed source not gpl    ||
 || Lots of support online (forums) ||  inconsistent sys req (rhel3 vs. 5 in various docs)  ||
 || Easy to use (no basis for comparison tho) ||  ExportClk (sp?) doesn't work ||
