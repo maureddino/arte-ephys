@@ -1,5 +1,7 @@
 #summary What are the advantages and disadvantages of NIDAQmx, NIDAQmx Base, and comedi?
 
+1/11/2010 Update: Stuart managed to recompile the kernel with a special flag that changes the heap size (?), and ConnTerms now works - we can get the clock signal out on the o-scope, and/or connect it to a digital in line and count the edges.
+
 = Introduction =
 
 After some initial coding with NIDAQmx, and Stuart's trolling of the NI forums, it's becoming clear that some of the c API functions that we want to use crash the system (unless we downgrade to RHEL3).  Let's discuss here the merits of NIDAQmx driver and its alternatives.  The limitations of the driver we go with may or may not have implications for the way we design the rest of the acquisition code (ie - re-writing/adapting may be more difficult than we'd imagine.  And writing something general enough to accommodate all three possibilities may mean taking a performance or features hit - this claim is up for debate).  Of course, running acquisition on an RHEL3 machine also puts limits on the other processes we'll write (such as a video tracker, or gui), if we want to have the option of running those other processes on the same machine that's doing the acquisition. (We'd like to have the option of running those things on other machines of course, but it would be unfortunate if using separate machines was mandatory).
