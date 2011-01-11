@@ -39,7 +39,12 @@ Feel free to answer these q's inline, if you research: (thanks)
 See here for NI's discussion of comedi vs. NIDAQmx:
 http://digital.ni.com/public.nsf/allkb/FE65DE3647BC7F1B86256DA4007E55B1
 
-I mention the RT stuff mainly because most of the activity on the discussion forums comes from people making the kernel modules on systems w/ RTAI.  Is RTAI _mandatory_ ?  Is real-time per-se mandatory?  If the latter, Xenomai seems like a more robust RT linux project.  Quick searches on comedi running under Xenomai pointed me to 'analogy' - a wrapper for comedi included in Xenomai.  Does this mean that pretty much all comedi functionality is available _through_ analogy?
+I mention the RT stuff mainly because most of the activity on the discussion forums comes from people making the kernel modules on systems w/ RTAI.  Is RTAI _mandatory_ ?  Is real-time per-se mandatory?  If the latter, Xenomai seems like a more robust RT linux project.  Quick searches on comedi running under Xenomai pointed me to 'analogy' - a fork of the comedi project included in Xenomai.  Does this mean that pretty much all comedi functionality is available _through_ analogy? Will comedi forum questions and sample code be useful to us if we're using analogy instead?
+
+http://www.comedi.org/
+https://mail.gna.org/public/xenomai-help/2006-08/msg00115.html
+http://www.xenomai.org/index.php/Analogy_general_presentation
+http://www.xenomai.org/index.php/Main_Pagehttp://www.xenomai.org/index.php/Main_Page
 
 == National Instruments Card vs. Alternative Hardware ==
 
