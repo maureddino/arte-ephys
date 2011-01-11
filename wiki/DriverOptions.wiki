@@ -49,6 +49,12 @@ General Standards has a 64 channel, 200Ms/sec card (strange specs) for $2500 or 
 
 == Find a different sln specifically for computer sync ==
 
-It seems that the most offensive API fn's are the ones we're using to get ahold of the clock signal for inter-computer sync.  We may think about staying with NIDAQmx 8 Linux and the CentOS 5.5 solution, and adding another PCI card (either NI or another vendor, or a Master-8!) for the sole purpose of exporting TTL clock signals (master) and counting those signals (slaves).  Alternatively, by patching the RTSI cable itself, we may be able to get the clock TTL?  This would probably void the warranty on the NI cards though.
+It seems that the most offensive API fn's are the ones we're using to get ahold of the clock signal for inter-computer sync.  We may think about staying with NIDAQmx 8 Linux and the CentOS 5.5 solution, and adding another PCI card (either NI or another vendor, or a Master-8!) for the sole purpose of exporting TTL clock signals (master) and counting those signals (slaves).  Alternatively, by patching the RTSI cable itself, we may be able to get the 80MHz sample clock as TTL?  This would probably void the warranty on the NI cards though.
+
+== Stay with NIDAQmx, Develop under Windows Instead ==
+
+omdb.
+
+
 
 Note - this page is meant to be a discussion.  PLEASE feel free to make comments inline, and/or to delete text about ideas that have been ruled out or are plainly untenable.
