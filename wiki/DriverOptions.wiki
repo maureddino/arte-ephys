@@ -48,9 +48,9 @@ I mention the RT stuff mainly because most of the activity on the discussion for
 
 == National Instruments Card vs. Alternative Hardware ==
 
-The NI 6254 is nice because it has 32 AI channels at 16 bits, 1Ms/sec acquisition, pretty simple multi-card sync within computer through the RTSI cable, and the supposed ability to export several on-board clocks as digital outputs on the card's pins (useful syncing other things going on in other computers).
+The NI 6254 is nice because it has 32 AI channels at 16 bits, 1MSPS aggregate rate acquisition, pretty simple multi-card sync within computer through the RTSI cable, and the supposed ability to export several on-board clocks as digital outputs on the card's pins (useful syncing other things going on in other computers).
 
-General Standards has a 64 channel, 200Ms/sec card (strange specs) for $2500 or so.  We haven't looked carefully at the driver and API associated with that card, and I don't know whether or not it's supported by comedi/analogy.
+General Standards has a 64 channel, 16 bit, 200KSPS per channel card that does simultaneous sampling on all channels for $2500 or so (http://www.generalstandards.com/view-products2.php?BD_family=16ai64ssc).  They have driver support for linux, but the API is lower level and not as polished as NIDAQmx. The comedi project lists two General Standards boards, but not the one we are interested in (http://www.comedi.org/hardware.html).
 
 == Find a different sln specifically for computer sync ==
 
