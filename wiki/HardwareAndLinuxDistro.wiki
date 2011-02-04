@@ -26,21 +26,18 @@ Our test machine:
  drivers link
 
 == GeForce 7300 (?) ==
- link to nvidia product page
 
- link to driver rpm (in case it leaves the repo?)
+nVidia driver: recommend that you do it using the nVidia binary installer, rather than a package (after Greg's experience)
+Find your hardware: sudo lspci
+Find the driver here: http://www.nvidia.com/Download/index.aspx?lang=en-us
+Download it and chmod it to be runnable
+change /etc/inittab
+id:5:initdefault:
+Change 5->3, reboot (into terminal-only mode)
+Nav to installer and run it.  This worked fine for me. When prompted about running nvidia-xconfig, say 'yes'.
+set /etc/inittab back to runlevel 5.
+Reboot.  To change monitor settings, run as root nvidia-settings
 
-Current instructions (from elrepo)
-
-rpm -Uvh http://elrepo.org/elrepo-release-5-2.el5.elrepo.noarch.rpm
-
-rpm -Uvh http://elrepo.org/elrepo-release-5-2.el5.elrepo.noarch.rpm
-
-yum --enablerepo=elrepo install kmod-nvidia
-
-nvidia-xconfig
-
-reboot
 
 Alternatively:
 
