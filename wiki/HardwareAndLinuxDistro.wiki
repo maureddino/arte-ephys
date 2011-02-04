@@ -42,6 +42,11 @@ nvidia-xconfig
 
 reboot
 
+Alternatively:
+
+http://www.linwik.com/wiki/configuring+a+nvidia+graphics+chip+for+centos+and+rhel+5
+(replacing uname-r with uname-r minus .mwlKernel part
+
 == Additional libraries ==
 
  libXt-devel (and dependencies)
