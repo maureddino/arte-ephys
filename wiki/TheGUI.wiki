@@ -1,0 +1,120 @@
+#summary Initial musings on how the user should interact with our software
+#labels Phase-Requirements,Phase-Design
+
+= Introduction =
+
+Users of data acquisition systems want two things:
+
+1) To visualize the highest possible amount of useful information about their experiment while the experiment is taking place
+
+2) Temporal efficiency (in program execution and the amount of coding/configuration time)
+
+These two goals are obviously at odds with one another. The more information the computer has to display, the fewer processing cycles it has for making sure the data is saved in real time. Each additional piece of information needs to be programmed or configured before it can be displayed, which leads to time lost before an experiment can be run.
+
+The lack of easy extensibility of existing programs (e.g. Cheetah, Cerebus, Plexon’s Recorder) has meant that most users don’t have a choice about either (without starting completely from scratch). Given that we’re starting from scratch, we have the chance to make software that is easy to use, yet powerful enough to do anything, within the limits of computational power.
+
+It could be argued that the software in systems neuroscience is as much of an impediment to progress as the hardware bottleneck. Current software allows us to observe raw signals, but not extract information from them online or use neural signals to control experimental parameters. This means that the experimental cycle takes MUCH longer than it should, because a wide parameter space must be tested first, then analyzed offline. In principle, things should go much faster when experimental parameters can be worked out online, with instant feedback. Certainly online feedback is getting more commonplace with the growth of BMIs, but it won’t really catch on until there is a commercially available (or widely used open-source) solution.
+
+These issues can be solved with clever programming, but probably not the kind of programming that a neuroscientist should be expected to do. The smart solution would be to convince 20 labs to put in $20,000 each (1/5th the cost of a new system), or one lab to receive a hefty grant, which can be used to hire a team of software engineers who should be able to get the job done in a year. Barring that, it shouldn’t be too hard to program ourselves, if we go about it the right way.
+
+= Thoughts on existing GUIs =
+
+*What we like:*
+
+- Different colors for different channels
+
+- Very little unused screen space (AD1, Cheetah 5)
+
+*What we dislike/hate:*
+
+- Not customizable / no possibility for online analysis on experimental control from within the program
+
+- Separate windows get lost easily
+
+- Very difficult to configure for the first time; impossible for a beginner to configure
+
+- Usually expensive
+
+- Ass-ugly
+
+= What we should strive for in our GUI =
+
+Visualization of and interaction with real-time streams of high-throughput data is done all the time—in the form of digital audio workstations (DAWs), used by millions of amateur and professional producers. We shouldn’t be afraid to borrow and/or shamelessly steal the most helpful aspects of this type of software in designing our GUI.
+
+For the purposes of neuroscience, visualization is based around 4 types of data streams:
+
+1) Continuous (LFP)
+
+2) Discrete (events)
+
+3) Combined (spikes)
+
+4) 2D (video)
+
+Interestingly, these are analogous to raw audio, MIDI, samples, and videos, which are efficiently and effectively combined in almost all DAWs.
+
+Continuous data has the following properties:
+hardware gain, resolution, sampling rate, channel (input, output, or software)
+
+Discrete data has the following properties:
+channel (input, output, or software)
+
+Combined data has the same properties as continuous data, plus: 
+number of samples, number of channels, trigger event
+
+2D data has the following properties:
+Input/output source, pixel size, pixel dimensions
+
+The GUI should be based around visualization modules for each type of data. There is an oscilloscope-like view for continuous, discrete, and combined data, an n-trode view (with waveforms and peak comparisons) for combined data, and a video view for 2D data. Different streams can be grouped together, which makes visualization easier (as groups can be highlighted or hidden). If we make it to this step, we will have basically everything that is absolutely necessary for running an experiment (except for changing filter settings, which will come in the next step).
+
+The novel aspect of this software will be that it is based around drag-and-drop modules that modify the data in specific ways. Of course, the raw data stream is always saved to disk (preferably by a separate computer), but in order to successfully use our data, we need to be able to manipulate it easily in the context of an experiment.
+
+The simplest (and most important) module is the “filter” module, which applies a digital filter to the stream at hand. At the very least, the module should allow the user to view and set the most important parameters, but ideally the module should offer some visualization of what its function is—whether it’s the frequency response of the filter, the filter kernel, or some other illustrative diagram. In the main visualization window, the post-processed stream appears immediately, but the user has the option of overlaying it on top of the original stream.
+
+The most important aspect of modules is that they are easy to understand and easy to modify and create. The input to each module should be data of a particular type, and the output should be data of the same (or different) type. For example, one might want to extract threshold crossings from LFP data (continuous to discrete) or extra x/y location from video (2D to continuous). Double-clicking on the module should bring up its source code, which can be modified, saved, and recompiled from within the program. Modules should be able to be written in Matlab, Python, or C, and converted and compiled into C upon loading.
+
+Other modules can be as simple as sends and Boolean logic, or as complex as spectral analysis, phase extraction, and even location reconstruction from ensemble codes. 
+
+THE MOST IMPORTANT THING about modules is that they be simple to produce. We cannot foresee the types of online analysis we’ll want to do in the future, so it’s crucial that we allow users to create their own with only a minimal amount of coding. We should also aim to include lots of general modules that can be used by beginning users with no knowledge of programming.
+
+An example:
+
+*Input:* continuous stream of LFP data
+
+Module 1: bandpass filter centered at 8 Hz
+
+Module 2: split into two separate streams
+
+Module 3: absolute value + threshold of stream A (discrete)
+
+Module 4: phase extraction of stream B (discrete)
+
+*Output:* laser pulses (analog output)
+
+Module 1: Boolean AND gate receiving input from input modules 3+4
+
+Module 2: Laser pulse amplitude and duration
+
+Potential pitfall:
+
+An experiment with lots of interconnected modules is going to get very complicated very fast. We therefore need a way to view all of the modules and their interconnections at a glance, with the ability to change these connections (and internal parameters) from this view.
+
+= Other potentially useful features = 
+
+- Ability to pause, rewind, and change the timebase of visualization without stopping data acquisition
+
+- Arduino Mega as the default I/O port—put it in a box with a bunch of BNC connectors, and go crazy
+
+- Everything is accessible from the same window, and can be hidden and brought into view when necessary
+
+- Easily convert to multi-screen view
+
+- Graphical configuration—load a picture of the EIB/headstage to make the channel connections in a drag-and-drop manner (of course, text file configs are also possible)
+
+
+
+= How do we make it happen? = 
+- Qt or GTK for cross-platform compatibility, integration with C++ or Python (esp. SciPy, which might be crucial)
+
+- HTML5 for browser visualization (probably a non-starter—not nearly powerful enough), but potentially useful for visualization-only software in the future
+
