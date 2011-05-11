@@ -1,120 +1,77 @@
-#summary Initial musings on how the user should interact with our software
+#summary Description of the user interface
 #labels Phase-Requirements,Phase-Design
 
 = Introduction =
 
-Users of data acquisition systems want two things:
+In trunk/src/GUI is a VERY preliminary version of the GUI. Right now it has extremely basic functionality: streaming in data from an outside source (currently the Intan dev board), displaying the data with OpenGL, and listening to the incoming input in real time through the computer’s default audio outputs. An internal signal generator can also be used if an outside data source is unavailable. The buttons don’t do anything yet—there’s no interactivity at all, but hopefully this will be added soon. 
 
-1) To visualize the highest possible amount of useful information about their experiment while the experiment is taking place
+The good news is that the framework should allow us to scale things up quickly. Adding new components (such as a disk writer, a spike viewer, a filter editor, etc.) will be very straightforward, thanks to the JUCE library used to create the GUI.
 
-2) Temporal efficiency (in program execution and the amount of coding/configuration time)
+= About JUCE =
 
-These two goals are obviously at odds with one another. The more information the computer has to display, the fewer processing cycles it has for making sure the data is saved in real time. Each additional piece of information needs to be programmed or configured before it can be displayed, which leads to time lost before an experiment can be run.
+The GUI is built on top of the JUCE library (http://www.rawmaterialsoftware.com/), an open-source C++ library with a ton of useful classes. I found its GUI tools to be extremely intuitive—everything is structured around components, which act as containers for other components (such as text boxes or buttons) and can listen for actions performed on those components. But this is not fundamentally different from what other GUI libraries do (although I found JUCE's syntax to be easier to grasp than others I’ve tried). The real advantage of JUCE is the fact that it was originally developed to build audio processing applications. Classes for creating audio processors, connecting them together, and making sure they process their data in the right order can be used pretty much out-of-the-box, of course substituting neural data for audio data.
 
-The lack of easy extensibility of existing programs (e.g. Cheetah, Cerebus, Plexon’s Recorder) has meant that most users don’t have a choice about either (without starting completely from scratch). Given that we’re starting from scratch, we have the chance to make software that is easy to use, yet powerful enough to do anything, within the limits of computational power.
+Other advantages of JUCE are the great documentation, the well-written source code, an active developer community, and the ease of cross-platform compilation. It’s lightweight (it takes less than 2 minutes to compile the whole thing), yet includes an incredibly wide range of classes.
 
-It could be argued that the software in systems neuroscience is as much of an impediment to progress as the hardware bottleneck. Current software allows us to observe raw signals, but not extract information from them online or use neural signals to control experimental parameters. This means that the experimental cycle takes MUCH longer than it should, because a wide parameter space must be tested first, then analyzed offline. In principle, things should go much faster when experimental parameters can be worked out online, with instant feedback. Certainly online feedback is getting more commonplace with the growth of BMIs, but it won’t really catch on until there is a commercially available (or widely used open-source) solution.
+Disadvantages include the fact that there’s only one available tutorial for JUCE: http://homepages.wmich.edu/~a5winfield/juce/JuceTutorial.pdf. It’s very basic, and only covers a small fraction of JUCE’s functionality. But the many demos included in the standard download make up for this. Reading through the source code of these demos was my primary means for learning how to use the library. Definitely check these out before diving in.
 
-These issues can be solved with clever programming, but probably not the kind of programming that a neuroscientist should be expected to do. The smart solution would be to convince 20 labs to put in $20,000 each (1/5th the cost of a new system), or one lab to receive a hefty grant, which can be used to hire a team of software engineers who should be able to get the job done in a year. Barring that, it shouldn’t be too hard to program ourselves, if we go about it the right way.
+I also had trouble compiling some things the very first time, since one of the header files was either misnamed or in the wrong place (check juce.h and/or juce_amalgamated.h, depending on what you’re compiling).
 
-= Thoughts on existing GUIs =
+In general, though, the more I use JUCE, the more I like it. I think it’s ideal for our project in a number of ways, and was a breath of fresh air after trying out a number of other GUI libraries (Qt, GTK+, wxWidgets, FLTK, openFrameworks, clutter…)
 
-*What we like:*
+= Dependencies =
 
-- Different colors for different channels
+The JUCE source code is included in the JuceLibraryCode folder of the GUI directory, so you don’t even have to download JUCE if you don’t want to. However, if you want to add any files or dependencies to the GUI part of the project, it’s best to do this through the “Jucer” application, which automatically generates makefiles for Linux, OS X, and Windows, all in one go. You can *probably* edit the makefile yourself, but I wouldn’t recommend it. To install, download JUCE from the sourceforge site, cd to juce/extras/Jucer (experimental)/Builds/Linux/ and type “make” Open the executable in the “build” folder, then open “arte.jucer” file from within the Jucer. You can either add new blank code files by right-clicking on a subdirectory (recommended), or add existing files by doing the same. Make sure you save the project before you try to compile, otherwise the makefile won’t be updated.
 
-- Very little unused screen space (AD1, Cheetah 5)
+To communicate with the Intan dev board (and to build the GUI in its current form), you’ll need to install libftdi, an open-source library for interfacing with FTDI chips via USB. This library depends on libusb, which can be downloaded here for Ubuntu: http://packages.ubuntu.com/lucid/libusb-dev. Both of these built without any problems on my machine, so installation should be pretty straightforward. 
 
-*What we dislike/hate:*
+= General logic of the whole thing =
 
-- Not customizable / no possibility for online analysis on experimental control from within the program
+For a beautiful flowchart of the main classes in the current project, check out trunk/docs/GUI_structure.pdf 
 
-- Separate windows get lost easily
+As it stands, classes are organized into three groups:
 
-- Very difficult to configure for the first time; impossible for a beginner to configure
+1. UI – classes that display something, or allow the user to interact with the program
+2. Audio – classes that interface with the computer’s audio hardware, for audio monitoring purposes, and for generating the callbacks necessary for funnel data through the processing pipeline. This class is responsible for setting the all-important buffer size.
+3. Processors – the meat of the application; these classes communicate with whatever data source is being used, handle filtering, resampling for display and audio monitoring, and write data to disk. They all inherent from JUCE’s AudioProcessor class, and live inside an AudioProcessorGraph. Disregard the fact that most of these classes were originally created to handle audio data—they are general enough to handle any sort of high-sample-rate data that needs to be processed in real time, which is exactly what we’re dealing with. Ultimately, I envision Processor classes becoming the basis for a wide range of drag-and-drop signal processing tools, but we are not quite at this point yet.
 
-- Usually expensive
+The most important class at the moment is the DataThread, located within “SourceNode.h”. The DataThread is responsible for communicating with the data source (in this case the Intan dev board, but eventually the NIDAQ boards) and writing all incoming data into a FIFO buffer. Whenever the SourceNode receives a callback, it copies all available data from this FIFO into another buffer, which is then passed on to the next processor. This is a rather quick and dirty way to do things, as it can't deal with errors well, but it works for now.
 
-- Ass-ugly
+In theory, to make the application compatible with another data source, you’ll only need to update two methods:
+	DataThread::updateBuffer() -- asks the data source to fill a small buffer with available data 
+	DataThread::sortData() -- sorts the data (if the bits are all mixed up), and puts it into the FIFO
 
-= What we should strive for in our GUI =
+When SourceNode::processBlock() is called, it copies the data from the FIFO to the main processing buffer.
 
-Visualization of and interaction with real-time streams of high-throughput data is done all the time—in the form of digital audio workstations (DAWs), used by millions of amateur and professional producers. We shouldn’t be afraid to borrow and/or shamelessly steal the most helpful aspects of this type of software in designing our GUI.
+= What’s implemented so far =
 
-For the purposes of neuroscience, visualization is based around 4 types of data streams:
+Main.cpp -- starts up the application and creates the main window
+MainWindow.cpp -- owns UIComponent, AudioComponent, and ProcessorGraph
 
-1) Continuous (LFP)
+The following objects are created by, and owned by, the main window:
+UIComponent.cpp -- holds all the UI components, such as displays, buttons, labels, sliders, tabs, etc., etc.
+AudioComponent.cpp -- deals with audio hardware, and generates the callbacks that funnel data through the application
+ProcessorGraph.cpp -- generates the graph that determines how data flows through the system
 
-2) Discrete (events)
+The various UI components and Processor classes should be pretty self-explanatory.
 
-3) Combined (spikes)
+= Immediate plans = 
 
-4) 2D (video)
+1. Add disk writing. This should be pretty straightforward, as JUCE has a lot of classes for this. We do need to decide on a data format at some point, but that’s not an immediate concern.
+2. Make the GUI work. The play button will start data acquisition, the record button will start writing data to disk, and the clock will keep track of time. 
+3. Add tetrode functionality, including spike detection and display.
+4. Add interactive sliders for changing filter parameters, adjusting the timebase and range of the display, etc.
+5. Make it possible to save and load configurations.
 
-Interestingly, these are analogous to raw audio, MIDI, samples, and videos, which are efficiently and effectively combined in almost all DAWs.
+Once these items are checked off, the GUI will replicate the basic functionality of the current AD system, and should be useable for collecting data. Obviously we’ll need to rigorously test its reliability before using it for anything mission-critical, but that’s the fun part, right?
 
-Continuous data has the following properties:
-hardware gain, resolution, sampling rate, channel (input, output, or software)
+= Other things to add =
 
-Discrete data has the following properties:
-channel (input, output, or software)
+1. A menu bar
+2. Individually editing the settings for each channel
+3. Drag-and-drop filters for interactively changing the processing pipeline
+4. Graphical config builder, for adjusting channel mappings on the fly
+5. Bells
+6. Whistles
 
-Combined data has the same properties as continuous data, plus: 
-number of samples, number of channels, trigger event
-
-2D data has the following properties:
-Input/output source, pixel size, pixel dimensions
-
-The GUI should be based around visualization modules for each type of data. There is an oscilloscope-like view for continuous, discrete, and combined data, an n-trode view (with waveforms and peak comparisons) for combined data, and a video view for 2D data. Different streams can be grouped together, which makes visualization easier (as groups can be highlighted or hidden). If we make it to this step, we will have basically everything that is absolutely necessary for running an experiment (except for changing filter settings, which will come in the next step).
-
-The novel aspect of this software will be that it is based around drag-and-drop modules that modify the data in specific ways. Of course, the raw data stream is always saved to disk (preferably by a separate computer), but in order to successfully use our data, we need to be able to manipulate it easily in the context of an experiment.
-
-The simplest (and most important) module is the “filter” module, which applies a digital filter to the stream at hand. At the very least, the module should allow the user to view and set the most important parameters, but ideally the module should offer some visualization of what its function is—whether it’s the frequency response of the filter, the filter kernel, or some other illustrative diagram. In the main visualization window, the post-processed stream appears immediately, but the user has the option of overlaying it on top of the original stream.
-
-The most important aspect of modules is that they are easy to understand and easy to modify and create. The input to each module should be data of a particular type, and the output should be data of the same (or different) type. For example, one might want to extract threshold crossings from LFP data (continuous to discrete) or extra x/y location from video (2D to continuous). Double-clicking on the module should bring up its source code, which can be modified, saved, and recompiled from within the program. Modules should be able to be written in Matlab, Python, or C, and converted and compiled into C upon loading.
-
-Other modules can be as simple as sends and Boolean logic, or as complex as spectral analysis, phase extraction, and even location reconstruction from ensemble codes. 
-
-THE MOST IMPORTANT THING about modules is that they be simple to produce. We cannot foresee the types of online analysis we’ll want to do in the future, so it’s crucial that we allow users to create their own with only a minimal amount of coding. We should also aim to include lots of general modules that can be used by beginning users with no knowledge of programming.
-
-An example:
-
-*Input:* continuous stream of LFP data
-
-Module 1: bandpass filter centered at 8 Hz
-
-Module 2: split into two separate streams
-
-Module 3: absolute value + threshold of stream A (discrete)
-
-Module 4: phase extraction of stream B (discrete)
-
-*Output:* laser pulses (analog output)
-
-Module 1: Boolean AND gate receiving input from input modules 3+4
-
-Module 2: Laser pulse amplitude and duration
-
-Potential pitfall:
-
-An experiment with lots of interconnected modules is going to get very complicated very fast. We therefore need a way to view all of the modules and their interconnections at a glance, with the ability to change these connections (and internal parameters) from this view.
-
-= Other potentially useful features = 
-
-- Ability to pause, rewind, and change the timebase of visualization without stopping data acquisition
-
-- Arduino Mega as the default I/O port—put it in a box with a bunch of BNC connectors, and go crazy
-
-- Everything is accessible from the same window, and can be hidden and brought into view when necessary
-
-- Easily convert to multi-screen view
-
-- Graphical configuration—load a picture of the EIB/headstage to make the channel connections in a drag-and-drop manner (of course, text file configs are also possible)
-
-
-
-= How do we make it happen? = 
-- Qt or GTK for cross-platform compatibility, integration with C++ or Python (esp. SciPy, which might be crucial)
-
-- HTML5 for browser visualization (probably a non-starter—not nearly powerful enough), but potentially useful for visualization-only software in the future
 
