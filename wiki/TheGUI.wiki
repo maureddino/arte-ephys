@@ -32,7 +32,9 @@ For a beautiful flowchart of the main classes in the current project, check out 
 As it stands, classes are organized into three groups:
 
 1. UI – classes that display something, or allow the user to interact with the program
+
 2. Audio – classes that interface with the computer’s audio hardware, for audio monitoring purposes, and for generating the callbacks necessary for funnel data through the processing pipeline. This class is responsible for setting the all-important buffer size.
+
 3. Processors – the meat of the application; these classes communicate with whatever data source is being used, handle filtering, resampling for display and audio monitoring, and write data to disk. They all inherent from JUCE’s AudioProcessor class, and live inside an AudioProcessorGraph. Disregard the fact that most of these classes were originally created to handle audio data—they are general enough to handle any sort of high-sample-rate data that needs to be processed in real time, which is exactly what we’re dealing with. Ultimately, I envision Processor classes becoming the basis for a wide range of drag-and-drop signal processing tools, but we are not quite at this point yet.
 
 The most important class at the moment is the DataThread, located within “SourceNode.h”. The DataThread is responsible for communicating with the data source (in this case the Intan dev board, but eventually the NIDAQ boards) and writing all incoming data into a FIFO buffer. Whenever the SourceNode receives a callback, it copies all available data from this FIFO into another buffer, which is then passed on to the next processor. This is a rather quick and dirty way to do things, as it can't deal with errors well, but it works for now.
@@ -46,11 +48,15 @@ When SourceNode::processBlock() is called, it copies the data from the FIFO to t
 = What’s implemented so far =
 
 Main.cpp -- starts up the application and creates the main window
+
 MainWindow.cpp -- owns UIComponent, AudioComponent, and ProcessorGraph
 
 The following objects are created by, and owned by, the main window:
+
 UIComponent.cpp -- holds all the UI components, such as displays, buttons, labels, sliders, tabs, etc., etc.
+
 AudioComponent.cpp -- deals with audio hardware, and generates the callbacks that funnel data through the application
+
 ProcessorGraph.cpp -- generates the graph that determines how data flows through the system
 
 The various UI components and Processor classes should be pretty self-explanatory.
@@ -58,9 +64,13 @@ The various UI components and Processor classes should be pretty self-explanator
 = Immediate plans = 
 
 1. Add disk writing. This should be pretty straightforward, as JUCE has a lot of classes for this. We do need to decide on a data format at some point, but that’s not an immediate concern.
+
 2. Make the GUI work. The play button will start data acquisition, the record button will start writing data to disk, and the clock will keep track of time. 
+
 3. Add tetrode functionality, including spike detection and display.
+
 4. Add interactive sliders for changing filter parameters, adjusting the timebase and range of the display, etc.
+
 5. Make it possible to save and load configurations.
 
 Once these items are checked off, the GUI will replicate the basic functionality of the current AD system, and should be useable for collecting data. Obviously we’ll need to rigorously test its reliability before using it for anything mission-critical, but that’s the fun part, right?
@@ -68,10 +78,13 @@ Once these items are checked off, the GUI will replicate the basic functionality
 = Other things to add =
 
 1. A menu bar
+
 2. Individually editing the settings for each channel
+
 3. Drag-and-drop filters for interactively changing the processing pipeline
+
 4. Graphical config builder, for adjusting channel mappings on the fly
+
 5. Bells
+
 6. Whistles
-
-
