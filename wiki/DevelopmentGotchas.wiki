@@ -1,0 +1,13 @@
+==Rough listing of problems that come up when coding, and solutions in some cases==
+
+
+===Prob 1 ===
+Programs that try to operate on big arte data files segfault, while they work on smaller files.
+===Solution===
+Sln: compile with this flag: {{{-D_FILE_OFFSET_BITS=64}}}  This seems to work sometimes even when the define line (#define _FILE_OFFSET_BITS 64) doesn't work.  See build.sh for arte_to_tt for example.
+
+===Prob 2===
+My thing that includes global_defs.h won't build, it complains about UINT16_MAX being not declared.
+
+=== Solution === 
+they're declared in <stdint.h> but only if you pass this flag to gcc:  -D__STDC_LIMIT_MACROS   (see build.sh for arte, or for arte_to_tt, for an example).
