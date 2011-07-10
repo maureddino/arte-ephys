@@ -10,7 +10,7 @@ Sln: compile with this flag: {{{-D_FILE_OFFSET_BITS=64}}}  This seems to work so
 My thing that includes global_defs.h won't build, it complains about UINT16_MAX being not declared.
 
 === Solution === 
-they're declared in <stdint.h> but only if you pass this flag to gcc:  -D__STDC_LIMIT_MACROS   (see build.sh for arte, or for arte_to_tt, for an example).
+they're declared in <stdint.h> but only if you pass this flag to gcc:  {{{-D__STDC_LIMIT_MACROS}}}   (see build.sh for arte, or for arte_to_tt, for an example).
 
 ===Prob 3===
 Trying to simultaneously use the analog in lines and a counter line, you get daqmx error num: -89137 with message: Specified route cannot be satisfied, because it requires resources that are currently in use by another route.  /  Property: DAQmx_RefClk_Src  /  Source Device: Dev1  /  Source Terminal: 10MHzRefClock  /  Required Resources in Use by  /  Task Name: Counter Task / Source Device: Dev1 / Source Terminal: None /  Destination Device: Dev1  /  Destination Terminal: RefClock / Task Name: Dev1 / Status Code: -89137
