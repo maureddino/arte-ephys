@@ -25,12 +25,18 @@ To communicate with the Intan dev board (and to build the GUI in its current for
 
 Before building the GUI, you'll probably also need to install:
 
-- build-essential
-- freeglut3-dev 
-- libfreetype6-dev
-- libxinerama-dev
-- libxcursor-dev
-- libasound2-dev
+build-essential
+
+freeglut3-dev 
+
+libfreetype6-dev
+
+libxinerama-dev
+
+libxcursor-dev
+
+libasound2-dev
+
 
 All of these can be installed with apt-get (e.g. $ sudo apt-get -y install libfreetype6-dev)
 
