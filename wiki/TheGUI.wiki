@@ -3,7 +3,7 @@
 
 = Introduction =
 
-In trunk/src/GUI is a VERY preliminary version of the GUI. Right now it has extremely basic functionality: streaming in data from an outside source (currently the Intan dev board), displaying the data with OpenGL, and listening to the incoming input in real time through the computer’s default audio outputs. An internal signal generator can also be used if an outside data source is unavailable. The buttons don’t do anything yet—there’s no interactivity at all, but hopefully this will be added soon. 
+In trunk/src/GUI is a preliminary version of the GUI. Right now it has extremely basic functionality: streaming in data from an outside source (currently the Intan dev board), displaying the data with OpenGL, and listening to the incoming input in real time through the computer’s default audio outputs.
 
 The good news is that the framework should allow us to scale things up quickly. Adding new components (such as a disk writer, a spike viewer, a filter editor, etc.) will be very straightforward, thanks to the JUCE library used to create the GUI.
 
@@ -15,15 +15,24 @@ Other advantages of JUCE are the great documentation, the well-written source co
 
 Disadvantages include the fact that there’s only one available tutorial for JUCE: http://homepages.wmich.edu/~a5winfield/juce/JuceTutorial.pdf. It’s very basic, and only covers a small fraction of JUCE’s functionality. But the many demos included in the standard download make up for this. Reading through the source code of these demos was my primary means for learning how to use the library. Definitely check these out before diving in.
 
-I also had trouble compiling some things the very first time, since one of the header files was either misnamed or in the wrong place (check juce.h and/or juce_amalgamated.h, depending on what you’re compiling).
-
 In general, though, the more I use JUCE, the more I like it. I think it’s ideal for our project in a number of ways, and was a breath of fresh air after trying out a number of other GUI libraries (Qt, GTK+, wxWidgets, FLTK, openFrameworks, clutter…)
 
 = Dependencies =
 
 The JUCE source code is included in the JuceLibraryCode folder of the GUI directory, so you don’t even have to download JUCE if you don’t want to. However, if you want to add any files or dependencies to the GUI part of the project, it’s best to do this through the “Jucer” application, which automatically generates makefiles for Linux, OS X, and Windows, all in one go. You can *probably* edit the makefile yourself, but I wouldn’t recommend it. To install, download JUCE from the sourceforge site, cd to juce/extras/Jucer (experimental)/Builds/Linux/ and type “make” Open the executable in the “build” folder, then open “arte.jucer” file from within the Jucer. You can either add new blank code files by right-clicking on a subdirectory (recommended), or add existing files by doing the same. Make sure you save the project before you try to compile, otherwise the makefile won’t be updated.
 
-To communicate with the Intan dev board (and to build the GUI in its current form), you’ll need to install libftdi, an open-source library for interfacing with FTDI chips via USB. This library depends on libusb, which can be downloaded here for Ubuntu: http://packages.ubuntu.com/lucid/libusb-dev. Both of these built without any problems on my machine, so installation should be pretty straightforward. 
+To communicate with the Intan dev board (and to build the GUI in its current form), you’ll need to install libftdi-dev, an open-source library for interfacing with FTDI chips via USB. This library depends on libusb, which should already be installed on Ubuntu.
+
+Before building the GUI, you'll probably also need to install:
+
+- build-essential
+- freeglut3-dev 
+- libfreetype6-dev
+- libxinerama-dev
+- libxcursor-dev
+- libasound2-dev
+
+All of these can be installed with apt-get (e.g. $ sudo apt-get -y install libfreetype6-dev)
 
 = General logic of the whole thing =
 
@@ -65,26 +74,10 @@ The various UI components and Processor classes should be pretty self-explanator
 
 1. Add disk writing. This should be pretty straightforward, as JUCE has a lot of classes for this. We do need to decide on a data format at some point, but that’s not an immediate concern.
 
-2. Make the GUI work. The play button will start data acquisition, the record button will start writing data to disk, and the clock will keep track of time. 
+2. Add tetrode functionality, including spike detection and display.
 
-3. Add tetrode functionality, including spike detection and display.
+3. Add interactive sliders for changing filter parameters, adjusting the timebase and range of the display, etc.
 
-4. Add interactive sliders for changing filter parameters, adjusting the timebase and range of the display, etc.
-
-5. Make it possible to save and load configurations.
+4. Make it possible to save and load configurations.
 
 Once these items are checked off, the GUI will replicate the basic functionality of the current AD system, and should be useable for collecting data. Obviously we’ll need to rigorously test its reliability before using it for anything mission-critical, but that’s the fun part, right?
-
-= Other things to add =
-
-1. A menu bar
-
-2. Individually editing the settings for each channel
-
-3. Drag-and-drop filters for interactively changing the processing pipeline
-
-4. Graphical config builder, for adjusting channel mappings on the fly
-
-5. Bells
-
-6. Whistles
