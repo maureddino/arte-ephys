@@ -23,7 +23,7 @@ The JUCE source code is included in the JuceLibraryCode folder of the GUI direct
 
 To communicate with the Intan dev board (and to build the GUI in its current form), you’ll need to install libftdi-dev, an open-source library for interfacing with FTDI chips via USB. This library depends on libusb, which should already be installed on Ubuntu.
 
-Before building the GUI, you'll probably also need to install:
+Before building the GUI, I needed to install these libraries (following a clean install of Ubuntu 10.10):
 
 build-essential
 
