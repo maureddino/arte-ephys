@@ -16,3 +16,8 @@ they're declared in <stdint.h> but only if you pass this flag to gcc:  {{{-D__ST
 Trying to simultaneously use the analog in lines and a counter line, you get daqmx error num: -89137 with message: Specified route cannot be satisfied, because it requires resources that are currently in use by another route.  /  Property: DAQmx_RefClk_Src  /  Source Device: Dev1  /  Source Terminal: 10MHzRefClock  /  Required Resources in Use by  /  Task Name: Counter Task / Source Device: Dev1 / Source Terminal: None /  Destination Device: Dev1  /  Destination Terminal: RefClock / Task Name: Dev1 / Status Code: -89137
 ===Solution===
 The clock source of the counter must be explicitly set to match that on the analog in lines.  Add this before starting the counter task:    daq_err_check( DAQmxSetRefClkSrc( counterTask, "OnboardClock") );
+
+===Prob4===
+Python scripts that recvfrom for broadcast packets don't see any packets, even when I know the packets are getting to the specified port on that host.
+===Solution===
+Is socket.bind( str host, int port ) the host field actually seems to be important.  Setting it to "127.0.0.1" or "1.1.2.54" (localhost, in each case), the socket won't see packets.  Setting to "" (empty string - as used in some python sockets tutorials) does seem to work.  I wonder if I have it wrong this way in the c code of backend, too, and it only works because we got lucky?. 
