@@ -1,27 +1,2 @@
-#summary Discussion: Network control app for arte
 #labels Network,Interface,Headless
-
-= Details =
-
-Please give feedback!  I haven't read much about network programming.
-
-The idea: arte acquisition will be entirely headless.  All UI will happen through UDP or TCP commands.
-
-Is this the right idea, below?
-The process running the program 'arte-control' will be the server, and all setup processes and display processes will be clients.
-
-A TCP socket on server port A will wait for connection requests from clients.  Port number A will be hard-coded in the headers of arte-control, arte, and arte-display?
-
-UDP port B will be for passing spike/eeg data from arte client to arte-display client.
-
-Plz edit this page heavily, adding links to relevant sites, and code snippets demonstrating how to set up these 'listening' and 'talking' ports.  This is a little bit of a sticking point for my thinking about where/when to load initialization files, etc.
-
-=Sub-issues=
-
-== Repo ==
-
-What about having 3 different executables under development in this repository?  How should we restructure it?  trunk/arte-headless/project_directories ,  trunk/arte-control/project_directories, trunk/arte_display/project_directories  ?  Or maybe  arte-control/trunk/project_dirs, arte-headless/trunk etc etc?
-
-Your thoughts inline.
-
-Thanks!
+For accepting text commands over the network, ArtE backend binds a single socket and listens to it continuously on a (detached?) thread.  backend/process_command includes arteopt.h (and indirectly trode.h and lfp_bank.h; we also declare extern trode_array and extern lfp_bank_array).  So process_command can call trode methods, changing thresholds, etc.
