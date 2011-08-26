@@ -1,0 +1,20 @@
+We'll use Google's [http://code.google.com/p/protobuf/ Protocol Buffers] to build command messages into buffers that can go over the network.
+
+Protobufs seems pretty easy to use.  You define a message in a .proto file, listing the names and datatypes of fields (they can be arrays).  Then you run your.proto file through google's protoc compiler, and it spits out c++ code that you include in your project.  Each message in the .proto gets its own class, with access and setting methods, and methods to convert from instance to byte-string.  The classes themselves take care of all endianness (and actually put little-endian data on the wire - they say this makes for better optimization b/c likely both ends of the communication will be little endian, so you avoid 2 byteswaps per piece of data).  I guess that's fine as long as protobufs is responsible both for the packing _and_ unpacking of the messages.
+
+You'll need to do this install on any machine that builds arte code that uses protobufs.  Although most of the library seems to be about generating c++ classes from the .proro file, that generated code includes protobufs headers.
+
+{{{
+cd Downloads/
+wget http://protobuf.googlecode.com/files/protobuf-2.4.1.tar.bz2
+tar -xf protobuf-2.4.1.tar.bz2
+cd protobuf-2.4.1
+./configure
+make
+make check
+sudo make install
+}}}
+
+Built and installed for me with no errors.  make check even gives a nice "all 4 tests passed" message when it finishes.
+
+In the process of trying it out now (writing a little server & client to transmit protobuf messages over zmq pub/sub).
