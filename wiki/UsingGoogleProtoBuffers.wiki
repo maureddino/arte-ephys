@@ -18,3 +18,9 @@ sudo make install
 Built and installed for me with no errors.  make check even gives a nice "all 4 tests passed" message when it finishes.
 
 In the process of trying it out now (writing a little server & client to transmit protobuf messages over zmq pub/sub).
+
+To build protobufs applications, you'll have to put 
+{{{
+`pkg-config --cflags --libs protobuf` 
+}}}
+(backtics) on the g++ line.  You may also have to use zmq.hpp (the c++ zmq bindings) instead of the standard c bindings, as the c zmq API seems to do things with void pointers that c++ complains about. (hint if you want to see this - compile a .cpp file that includes zhelpers and uses send_s or recv_s.  I may be wrong).
