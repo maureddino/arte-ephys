@@ -13,6 +13,7 @@ cd protobuf-2.4.1
 make
 make check
 sudo make install
+sudo /sbin/ldconfig
 }}}
 
 Built and installed for me with no errors.  make check even gives a nice "all 4 tests passed" message when it finishes.
