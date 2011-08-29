@@ -9,8 +9,19 @@ Go [http://www.zeromq.org/intro:get-the-software here] and get the POSIX tarball
 
 My steps:
 
+If you don't already have epel repo set up, you likely have to:
+{{{
+sudo rpm -Uvh http://download.fedora.redhat.com/pub/epel/5/i386/epel-release-5-4.noarch.rpm
+}}}
+
 {{{
 sudo yum install libtools
+}}}
+
+libtools package seems to be sometimes found, sometimes not. If not just
+
+{{{
+sudo yum install automake autoconf
 }}}
 
 This included automake & autoconf as dependencies, which surprisingly weren't already installed on the system.  Instructions want uuid-dev package, but under RHEL5 there's only uuid-devel.
