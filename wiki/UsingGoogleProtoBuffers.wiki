@@ -16,6 +16,14 @@ sudo make install
 sudo /sbin/ldconfig
 }}}
 
+NB: In one build case, I got a makefile in protobuf-2.4.1 that didn't make anything.  I had to cd gtest first (reading the output from ./configure, protobuf built there.  This message is sent from all ./configure runs though, even on computers where make works from within the base directory).
+
+On RHEL5/CentOS 5.5 machines, pkg-config doesn't seem to work out of the box.  Before compiling, you have to issue:
+{{{
+PKG_CONFIG_PATH = /usr/local/lib/pkgconfig
+}}}
+Consider adding this to .profile or something like that, b/c setting the environment variable only lasts until restart.  Other option is to add -lprotobuf  to the g++ line; -lprotobuf seems to be the only essential flag set by `pkg-config --cflags --libs protobuf`.
+
 Built and installed for me with no errors.  make check even gives a nice "all 4 tests passed" message when it finishes.
 
 In the process of trying it out now (writing a little server & client to transmit protobuf messages over zmq pub/sub).
