@@ -1,0 +1,8 @@
+We'll use the PCI-CTR05 counter card in machines needing to count the clock signal other than the backend (computer running tracker, for example).
+
+The hope is that this card can be used more easily than the national instruments cards under Ubuntu.  (We don't want the tracker running under CentOS like the backend b/c we're limited to less fancy libraries under CentOS).
+
+A driver can be found here
+ftp://lx10.tx.ncsu.edu/pub/Linux/drivers
+
+Also pick up 60-mcc.rules from there.  Read the readme file carefully.  I'm going to try to install it on my workstation presently..
