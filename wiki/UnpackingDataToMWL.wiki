@@ -17,7 +17,7 @@ General instructions for unpacking:
   * Let's say tetrode names 0 through 7 (defined in arte_session.conf) correspond to tetrodes 23 24 25 26 01 02 03 04 from your drive, and you use the naming convention ##%% for a tetrode's directory, ## tetrode id digits, %% day of the month digits.
   * Move all raw data from AD and arte into expr_dir/raw/
   * Run your normal AD extraction first (to produce .tt and .pxyaby files from AD spike files, and to produce .pos and .p files from the tracker)
-  * Run arte_extract.py like this:
+  * Run arte_extract.py like this, from within expr_dir/:
 ` python ~/path/to/arte/arte-ephys/src/extract/arte_extract.py -trodenames 0 1 2 3 4 5 6 7 -trodelabels 2314 2414 2514 2614 0114 0214 0314 0414 -i raw/arte051412.data`
   * The code is a little buggy, so the order of the flags you pass is important.
   * Check the .pxyabw files produced in xclust
