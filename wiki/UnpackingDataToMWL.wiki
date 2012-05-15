@@ -1,4 +1,5 @@
 #summary How to unpack arte data into MWL format.
+#labels Extraction,Data
 
 = Introduction =
 
@@ -17,4 +18,9 @@ General instructions for unpacking:
   * Move all raw data from AD and arte into expr_dir/raw/
   * Run your normal AD extraction first (to produce .tt and .pxyaby files from AD spike files, and to produce .pos and .p files from the tracker)
   * Run arte_extract.py like this:
-` python ~/path/to/arte/arte-ephys/source/
+` python ~/path/to/arte/arte-ephys/src/extract/arte_extract.py -trodenames 0 1 2 3 4 5 6 7 -trodelabels 2314 2414 2514 2614 0114 0214 0314 0414 -i raw/arte051412.data`
+  * The code is a little buggy, so the order of the flags you pass is important.
+  * Check the .pxyabw files produced in xclust
+  * If you run _new_ arte_extract.py on _old_ data, you will get errors and no data.
+  * If you run _old_ arte_extract.py on _new_ data, arte_to_mwl will probably silently run through the file and claim to find no spikes, or segfault.  Either way you definitely won't get data out.
+  * The old/new boundary will probably be something like July 2012.  When it happens, old arte_extract will be moved to a new directory called old_extract, and renamed as old_arte_to_mwl and old_arte_extract.py
