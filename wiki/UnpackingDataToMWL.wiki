@@ -13,3 +13,8 @@ General instructions for unpacking:
   * Grab the code or the executables from the svn site or from the svn repository or from Greg.  Data collected before July 2012 has to be extracted by the older version of the binary.
   * *arte_to_mwl* and *arte_extract.py* live in arte-ephys/src/extract/ until further notice
   * Arte raw data can live together with raw AD data in /expr_dir/raw/ (expr_dir = for example /051412 directory for recording session from may 14 2012)
+  * Let's say tetrode names 0 through 7 (defined in arte_session.conf) correspond to tetrodes 23 24 25 26 01 02 03 04 from your drive, and you use the naming convention ##%% for a tetrode's directory, ## tetrode id digits, %% day of the month digits.
+  * Move all raw data from AD and arte into expr_dir/raw/
+  * Run your normal AD extraction first (to produce .tt and .pxyaby files from AD spike files, and to produce .pos and .p files from the tracker)
+  * Run arte_extract.py like this:
+` python ~/path/to/arte/arte-ephys/source/
