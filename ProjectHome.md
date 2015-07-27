@@ -1,0 +1,9 @@
+**Note** This project is coming back to life!  I realize that it will do perfectly well as a backend for the realtime decoding work going on in haskell, which is coming along pretty well (still not in a working state though).  In fact, the tracker is nearly working.  And it looks like haskell's bindings to OpenCV will take some time to flesh out. So I'll be using the c++ arte backend and tracker to produce good-enough data until the day when these components too are written in haskell.  I did some experimental fumbling with work-stealing and integration of protocol buffers into this repo, but never finished those - I'll be trying to roll back the changes and move forward from the last working version.  Spike viewer has breaking changes - I'll be trying to fix that too.  November 6, 2013
+
+**Note** This project lives on [github](http://github.com/ImAlsoGreg/arte-ephys) now, and is getting a complete reboot, being rewritten and then extended in Haskell.  The c++ version will remain here and will get bug-fixes.  But it will probably never have a working position tracker or any new features.  The Haskell version is not nearly in a working state yet.  But stay tuned for updates. May 07, 2013
+
+A tetrode-centric, low-latency electrophysiology back-end.  ArtE acquires data from an A/D card in small buffers, and performs filtering, spike-detection, down-sampling, disk-writing, and broadcasting to ethernet for immediate processing in closed-loop applications.
+
+Here's a recent screenshot from the late infancy stage -
+
+[![](http://web.mit.edu/greghale/Public/arte_screenshot2.png)](http://arte-ephys.googlecode.com/)

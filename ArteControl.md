@@ -1,0 +1,1 @@
+For accepting text commands over the network, ArtE backend binds a single socket and listens to it continuously on a (detached?) thread.  backend/process\_command includes arteopt.h (and indirectly trode.h and lfp\_bank.h; we also declare extern trode\_array and extern lfp\_bank\_array).  So process\_command can call trode methods, changing thresholds, etc.
